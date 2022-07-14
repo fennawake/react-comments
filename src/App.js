@@ -18,22 +18,36 @@ class App extends React.Component {
         message: "This is other component with props, class and state",
         date: new Date()
       }
-    ]
+    ],
+    form: {
+      name: '',
+      email: '',
+      message: ''
+    }
   }
 
-  addComment = () => {
-    const newComment = {
-      name: "Susan boyle",
-      email: "susan@gmail.com",
-      message: "This component was created when the button clicked!",
-      date: new Date()
-    };
+  addComment = (event) => {
+    event.preventDefault();
+
+    const newComment = {...this.state.form, date: new Date()}
 
     this.setState({
-      comments: [...this.state.comments, newComment]
+      comments: [...this.state.comments, newComment],
+      form: {
+        name: '',
+        email: '',
+        message: ''
+      }
     });
+  }
 
-    console.log("Access addComment method!");
+  onFieldChanged = (event) => {
+    const newCommentForm = this.state.form
+    newCommentForm[event.target.name] = event.target.value
+
+    this.setState({
+      form: newCommentForm,
+    })
   }
 
   render(){
@@ -45,13 +59,25 @@ class App extends React.Component {
             <Comment 
               key= {index}
               name= {comment.name} 
-              email= {comment.email} 
+              email= {comment.email}  
               message= {comment.message}
               date= {comment.date} 
             />
           );
         })}
-        <button onClick={this.addComment}>Adicionar comentario</button>
+        <form onSubmit={this.addComment}>
+          <h2>Add a comment</h2>
+          <div>
+            <input onChange={this.onFieldChanged} value={this.state.form.name} type="text" name="name" placeholder="Your name" required="required" />
+          </div>
+          <div>
+            <input onChange={this.onFieldChanged} value={this.state.form.email} type="email" name="email" placeholder="Your email" required="required" />
+          </div>
+          <div>
+            <textarea onChange={this.onFieldChanged} value={this.state.form.message} name="message" rows="4" placeholder="Your message" required="required" />
+          </div>
+          <button type="submit">Add a comment</button>
+        </form>
       </div>
     );
   }
