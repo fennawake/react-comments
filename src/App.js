@@ -50,6 +50,16 @@ class App extends React.Component {
     })
   }
 
+  deleteComment = (comment) => {
+    const filteredList = this.state.comments.filter((commentFilter) => {
+      return comment !== commentFilter
+    })
+    
+    this.setState({
+      comments: filteredList
+    })
+  }
+
   render(){
     return (
       <div className="App">
@@ -60,8 +70,11 @@ class App extends React.Component {
               key= {index}
               name= {comment.name} 
               email= {comment.email}  
-              message= {comment.message}
+              message= {comment.message}  
               date= {comment.date} 
+              onDeleteComment= { () => {
+                this.deleteComment(comment)}
+              }
             />
           );
         })}
