@@ -26,6 +26,7 @@ img {
 .content .email {
     color: #ffffff60;
     margin-bottom: 15px;
+    font-size: 0.85rem;
 }
 
 .content .message {
