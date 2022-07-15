@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Comment from './components/Comment/';
 import CommentForm from './components/commentForm';
+import Swal from 'sweetalert2';
 
 class App extends React.Component {
 
@@ -40,6 +41,8 @@ class App extends React.Component {
         message: ''
       }
     });
+
+    Swal.fire('Comment added with success!', '', 'success')
   }
 
   onFieldChanged = (event) => {
@@ -48,6 +51,25 @@ class App extends React.Component {
 
     this.setState({
       form: newCommentForm,
+    })
+  }
+
+  deleteCommentAlert = (comment) => {
+    Swal.fire({
+      title: 'Do you want delete the comment?',
+      showDenyButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Yes',
+      denyButtonText: `No`,
+      icon: 'question'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.deleteComment(comment)
+        Swal.fire('Deleted!', '', 'success')
+      } else if (result.isDenied) {
+        Swal.fire('Comment are not deleted', '', 'info')
+      }
     })
   }
 
@@ -74,7 +96,7 @@ class App extends React.Component {
               message= {comment.message}  
               date= {comment.date} 
               onDeleteComment= { () => {
-                this.deleteComment(comment)}
+                this.deleteCommentAlert(comment)}
               }
             />
           );
